@@ -16,8 +16,8 @@ public class Program {
         System.out.println("starting program");
         System.setProperty("webdriver.firefox.bin", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe");
         DesiredCapabilities dc = DesiredCapabilities.chrome();
-        //WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
+        //WebDriver driver = new FirefoxDriver();
         driver.get("http://phschool.com/atschool/realidades/Activities/PrelimChapL3/PrelimL30001.html");
         WebElement el = driver.findElement(By.xpath("/html/body/object/embed"));
         el.click();
