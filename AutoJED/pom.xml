@@ -22,7 +22,7 @@
             <artifactId>JNativeHook</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/JNativeHook.jar</systemPath>
+            <systemPath>${java.home}/mavenlibs/JNativeHook.jar</systemPath>
         </dependency>
     </dependencies>
     <properties>
