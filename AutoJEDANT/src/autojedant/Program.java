@@ -1,17 +1,23 @@
-package com.ajed.autojed;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import autojedant.GlobalKeyListener;
+package autojedant;
+
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.jnativehook.GlobalScreen;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
 
 public class Program {
 
@@ -31,16 +37,31 @@ public class Program {
         
         System.setProperty("webdriver.firefox.bin", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe");
         DesiredCapabilities dc = DesiredCapabilities.chrome();
-        WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
-        //WebDriver driver = new FirefoxDriver();
+        //WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
+        WebDriver driver = new FirefoxDriver();
+        driver.get("http://phschool.com/atschool/realidades/Activities/PrelimChapL3/PrelimL30001.xml");
+        //WebElement el = driver.findElement(By.xpath("/html/body/object/embed"));
+        //el.click();
+        String xml = driver.getPageSource();
+        int stindex = 0;
+        int endindex = 0;
+        while (true) {
+            stindex = xml.indexOf("<A>", stindex + 1) + 3;
+            if (stindex == 1) {
+                break;
+            }
+            endindex = xml.indexOf("</A>", stindex + 1);
+            answers.add(xml.substring(stindex, endindex));
+            
+            
+        }
         driver.get("http://phschool.com/atschool/realidades/Activities/PrelimChapL3/PrelimL30001.html");
-        WebElement el = driver.findElement(By.xpath("/html/body/object/embed"));
-        el.click();
-        Thread.sleep(2000);
-
-        System.out.println("sending keys");
+        System.out.println("Press ctrl to type answer");
 
         //Thread.sleep(500);
     }
+    int answerNum = 0;
+    public static List<String> answers = new ArrayList<String>();
 
 }
+
