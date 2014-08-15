@@ -16,8 +16,49 @@ public class GlobalKeyListener implements NativeKeyListener {
 
         @Override
         public void nativeKeyReleased(NativeKeyEvent e) {
-            if (e.getKeyCode() == NativeKeyEvent.CTRL_MASK) {
-                System.out.println("typeing ans");
+            if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
+                Program.answerNum++;
+                if (Program.answerNum >= Program.answers.size()) {
+                    System.out.println("final answer entered, eqiting program.");
+                    System.exit(0);
+                } else if (Program.answerNum == Program.answers.size() - 1) {
+                    System.out.println("All answers entered, next ctrl ends program.");
+                }
+                Program.keyboard.type(Program.answers.get(Program.answerNum));
+            }
+            
+            if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
+                
+                if (Program.answerNum >= Program.answers.size()) {
+                    System.out.println("final answer entered, eqiting program.");
+                    System.exit(0);
+                } else if (Program.answerNum == Program.answers.size() - 1) {
+                    System.out.println("All answers entered, next ctrl ends program.");
+                }
+                Program.keyboard.type(Program.answers.get(Program.answerNum));
+            }
+            if (e.getKeyCode() == NativeKeyEvent.VK_DELETE || e.getKeyCode() == NativeKeyEvent.VK_LEFT) {
+                Program.answerNum--;
+                System.out.println("Decromenting answer number.");
+                if (Program.answerNum >= Program.answers.size()) {
+                    System.out.println("final answer entered, eqiting program.");
+                    System.exit(0);
+                } else if (Program.answerNum == Program.answers.size() - 1) {
+                    System.out.println("All answers entered, next ctrl ends program.");
+                }
+                //Program.keyboard.type(Program.answers.get(Program.answerNum));
+            }
+            
+            if (e.getKeyCode() == NativeKeyEvent.VK_RIGHT) {
+                Program.answerNum++;
+                System.out.println("Incromenting answer number.");
+                if (Program.answerNum >= Program.answers.size()) {
+                    System.out.println("final answer entered, eqiting program.");
+                    System.exit(0);
+                } else if (Program.answerNum == Program.answers.size() - 1) {
+                    System.out.println("All answers entered, next ctrl ends program.");
+                }
+                //Program.keyboard.type(Program.answers.get(Program.answerNum));
             }
         }
 
@@ -25,6 +66,4 @@ public class GlobalKeyListener implements NativeKeyListener {
         public void nativeKeyTyped(NativeKeyEvent e) {
                 
         }
-
-        
 }
