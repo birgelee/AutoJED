@@ -20,17 +20,22 @@ public class GlobalKeyListener implements NativeKeyListener {
                 Program.answerNum++;
                 if (Program.answerNum >= Program.answers.size()) {
                     System.out.println("final answer entered, eqiting program.");
+                    GlobalScreen.unregisterNativeHook();
                     System.exit(0);
-                } else if (Program.answerNum == Program.answers.size() - 1) {
-                    System.out.println("All answers entered, next ctrl ends program.");
                 }
                 Program.keyboard.type(Program.answers.get(Program.answerNum));
+                if (Program.answerNum == Program.answers.size() - 1) {
+                    System.out.println("final answer entered, eqiting program.");
+                    GlobalScreen.unregisterNativeHook();
+                    System.exit(0);
+                }
             }
             
             if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
                 
                 if (Program.answerNum >= Program.answers.size()) {
                     System.out.println("final answer entered, eqiting program.");
+                    GlobalScreen.unregisterNativeHook();
                     System.exit(0);
                 } else if (Program.answerNum == Program.answers.size() - 1) {
                     System.out.println("All answers entered, next ctrl ends program.");
@@ -42,6 +47,7 @@ public class GlobalKeyListener implements NativeKeyListener {
                 System.out.println("Decromenting answer number.");
                 if (Program.answerNum >= Program.answers.size()) {
                     System.out.println("final answer entered, eqiting program.");
+                    GlobalScreen.unregisterNativeHook();
                     System.exit(0);
                 } else if (Program.answerNum == Program.answers.size() - 1) {
                     System.out.println("All answers entered, next ctrl ends program.");
@@ -54,6 +60,7 @@ public class GlobalKeyListener implements NativeKeyListener {
                 System.out.println("Incromenting answer number.");
                 if (Program.answerNum >= Program.answers.size()) {
                     System.out.println("final answer entered, eqiting program.");
+                    GlobalScreen.unregisterNativeHook();
                     System.exit(0);
                 } else if (Program.answerNum == Program.answers.size() - 1) {
                     System.out.println("All answers entered, next ctrl ends program.");

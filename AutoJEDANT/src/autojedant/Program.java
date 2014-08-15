@@ -6,13 +6,9 @@
 package autojedant;
 
 import java.awt.AWTException;
-import java.awt.Button;
-import java.awt.Robot;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -25,7 +21,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class Program {
 
@@ -43,8 +38,8 @@ public class Program {
         keyboard = new Keyboard();
         System.out.println("started keyboard");
 
-        //System.setProperty("webdriver.firefox.bin", "C:/Program Files (x86)/Mozilla Firefox/firefox.exe");
-        //DesiredCapabilities dc = DesiredCapabilities.chrome();
+        //System.setProperty("webdriver.chrome.driver", "C:\\Users\\Henry\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe");
+        DesiredCapabilities dc = DesiredCapabilities.chrome();
         //WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
         String defaultURL = "http://phschool.com/webcodes10/index.cfm?wcprefix=*P*&wcsuffix=*N*&area=view";
 
@@ -73,6 +68,13 @@ public class Program {
         p.add(urlField);
         p.add(b);
 
+        fr.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                GlobalScreen.unregisterNativeHook();
+                System.exit(0);
+            }
+        });
         fr.add(p);
         fr.pack();
         fr.setVisible(true);
@@ -82,6 +84,7 @@ public class Program {
         }
         String url;
         WebDriver driver = new FirefoxDriver();
+        //WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
         if (!urlField.getText().startsWith("optional")) {
             url = urlField.getText();
         } else {
@@ -113,7 +116,7 @@ public class Program {
 
         }
         GlobalScreen.getInstance().addNativeKeyListener(new GlobalKeyListener());
-        System.out.println("Press ctrl to type answer");
+        System.out.println("Press ctrl to type answer 1");
         driver.get(url);
 
     }
