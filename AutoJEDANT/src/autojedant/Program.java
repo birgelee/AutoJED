@@ -92,7 +92,7 @@ public class Program {
             defaultURL = defaultURL.replace("*N*", suffixField.getText());
 
             driver.get(defaultURL);
-            WebElement el = driver.findElement(By.xpath("/html/body/div[1]/div[3]/div[2]/div[1]/div[1]/ul/li[1]/a"));
+            WebElement el = driver.findElement(By.xpath("/html/body/div/div[3]/div[2]/div[1]/ul[1]/li[1]/a"));
 
             url = el.getAttribute("href");
         }

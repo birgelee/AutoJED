@@ -11,6 +11,7 @@ public class Keyboard {
 
     public Keyboard() throws AWTException {
         this.robot = new Robot();
+        robot.setAutoDelay(80);
     }
 
     public Keyboard(Robot robot) {
