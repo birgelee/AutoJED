@@ -11,13 +11,17 @@ public class Keyboard {
 
     public Keyboard() throws AWTException {
         this.robot = new Robot();
-        robot.setAutoDelay(80);
+        robot.setAutoDelay(40);
     }
 
     public Keyboard(Robot robot) {
         this.robot = robot;
     }
 
+    
+    public Robot getRobot() {
+        return robot;
+    }
     public void type(CharSequence characters) {
         int length = characters.length();
         for (int i = 0; i < length; i++) {

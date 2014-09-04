@@ -6,9 +6,18 @@
 package autojedant;
 
 import java.awt.AWTException;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -16,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.jnativehook.GlobalScreen;
+import org.jnativehook.keyboard.NativeKeyEvent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,7 +34,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class Program {
 
-    public static void main(String[] args) throws InterruptedException, MalformedURLException, AWTException {
+    public static void main(String[] args) throws InterruptedException, MalformedURLException, AWTException, IOException, URISyntaxException {
         System.out.println("starting program");
         try {
             GlobalScreen.registerNativeHook();
@@ -83,24 +93,25 @@ public class Program {
             Thread.sleep(100);
         }
         String url;
-        WebDriver driver = new FirefoxDriver();
+        //WebDriver driver = new FirefoxDriver();
         //WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
         if (!urlField.getText().startsWith("optional")) {
             url = urlField.getText();
         } else {
             defaultURL = defaultURL.replace("*P*", prefixField.getText());
             defaultURL = defaultURL.replace("*N*", suffixField.getText());
-
-            driver.get(defaultURL);
-            WebElement el = driver.findElement(By.xpath("/html/body/div/div[3]/div[2]/div[1]/ul[1]/li[1]/a"));
-
-            url = el.getAttribute("href");
+            String page = fetchWebpage(defaultURL, false);// seach string = <li><a href="/atschool/
+            //System.out.println("page: " + page);
+            int stindex = page.indexOf("<li><a href=\"/atschool/") + 13;
+            int endindex = page.indexOf("\" onclick=\"openSmallerReal");
+            url = page.substring(stindex, endindex);
+            url = "http://www.phschool.com" + url;
         }
         System.out.println(url);
 
-        driver.get(url.replace(".html", ".xml"));
-
-        String xml = driver.getPageSource();
+        //driver.get(url.replace(".html", ".xml"));
+        String xml = fetchWebpage(url.replace(".html", ".xml"), true);
+        System.out.println("xml: " + xml);
         int stindex = 0;
         int endindex = 0;
         while (true) {
@@ -117,7 +128,8 @@ public class Program {
         }
         GlobalScreen.getInstance().addNativeKeyListener(new GlobalKeyListener());
         System.out.println("Press ctrl to type answer 1");
-        driver.get(url);
+        Desktop.getDesktop().browse(new URI(url));
+        //driver.get(url);
 
     }
 
@@ -125,5 +137,41 @@ public class Program {
     public static Keyboard keyboard;
     public static int answerNum = -1;
     public static List<String> answers = new ArrayList<String>();
+
+    public static String fetchWebpage(String urlString, boolean utf16) {
+        URL url;
+        InputStream is = null;
+        BufferedReader br;
+        String result = "";
+
+        String line;
+
+        try {
+            url = new URL(urlString);
+            is = url.openStream();  // throws an IOException
+            if (utf16) {
+                br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_16));
+            } else {
+                br = new BufferedReader(new InputStreamReader(is));
+            }
+
+            while ((line = br.readLine()) != null) {
+                result += line + "\n";
+            }
+        } catch (MalformedURLException mue) {
+            mue.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException ioe) {
+                // nothing to see here
+            }
+        }
+        return result;
+    }
 
 }
