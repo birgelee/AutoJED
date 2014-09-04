@@ -25,12 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.jnativehook.GlobalScreen;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class Program {
 
@@ -48,9 +42,6 @@ public class Program {
         keyboard = new Keyboard();
         System.out.println("started keyboard");
 
-        //System.setProperty("webdriver.chrome.driver", "C:\\Users\\Henry\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe");
-        DesiredCapabilities dc = DesiredCapabilities.chrome();
-        //WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
         String defaultURL = "http://phschool.com/webcodes10/index.cfm?wcprefix=*P*&wcsuffix=*N*&area=view";
 
         JFrame fr = new JFrame("Enter Web Code");
@@ -93,15 +84,12 @@ public class Program {
             Thread.sleep(100);
         }
         String url;
-        //WebDriver driver = new FirefoxDriver();
-        //WebDriver driver = new RemoteWebDriver(new URL("http://localhost:9515"), dc);
         if (!urlField.getText().startsWith("optional")) {
             url = urlField.getText();
         } else {
             defaultURL = defaultURL.replace("*P*", prefixField.getText());
             defaultURL = defaultURL.replace("*N*", suffixField.getText());
             String page = fetchWebpage(defaultURL, false);// seach string = <li><a href="/atschool/
-            //System.out.println("page: " + page);
             int stindex = page.indexOf("<li><a href=\"/atschool/") + 13;
             int endindex = page.indexOf("\" onclick=\"openSmallerReal");
             url = page.substring(stindex, endindex);
@@ -109,7 +97,6 @@ public class Program {
         }
         System.out.println(url);
 
-        //driver.get(url.replace(".html", ".xml"));
         String xml = fetchWebpage(url.replace(".html", ".xml"), true);
         System.out.println("xml: " + xml);
         int stindex = 0;
@@ -129,7 +116,6 @@ public class Program {
         GlobalScreen.getInstance().addNativeKeyListener(new GlobalKeyListener());
         System.out.println("Press ctrl to type answer 1");
         Desktop.getDesktop().browse(new URI(url));
-        //driver.get(url);
 
     }
 
