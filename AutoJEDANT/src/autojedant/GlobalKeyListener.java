@@ -14,17 +14,19 @@ public class GlobalKeyListener implements NativeKeyListener {
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent e) {
-        if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL) {
+        if (e.getKeyCode() == NativeKeyEvent.VK_CONTROL && Program.armKeyListener) {
             while (true) {
                 Program.answerNum++;
                 if (Program.answerNum >= Program.answers.size()) {
-                    System.out.println("final answer entered, eqiting program.");
+                    System.out.println("final answer entered.");
                     Program.allAnswersEntered = true;
+                    break;
                 }
                 Program.keyboard.type(Program.answers.get(Program.answerNum));
                 if (Program.answerNum == Program.answers.size() - 1) {
-                    System.out.println("final answer entered, eqiting program.");
+                    System.out.println("final answer entered.");
                     Program.allAnswersEntered = true;
+                    break;
                 }
 
                 Program.keyboard.getRobot().keyPress(NativeKeyEvent.VK_DOWN);

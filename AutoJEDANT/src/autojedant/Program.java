@@ -96,7 +96,11 @@ public class Program {
             }
         } else {
             defaultURL = defaultURL.replace("*P*", prefixField.getText());
-            defaultURL = defaultURL.replace("*N*", suffixField.getText());
+            String replacement = suffixField.getText();
+            if (replacement.length() == 3) {
+                replacement = "0" + replacement;
+            }
+            defaultURL = defaultURL.replace("*N*", replacement);
             String page = fetchWebpage(defaultURL, false);// seach string = <li><a href="/atschool/
             int stindex = page.indexOf("<li><a href=\"/atschool/") + 13;
             int endindex = page.indexOf("\" onclick=\"openSmallerReal");
@@ -118,16 +122,17 @@ public class Program {
         
         GlobalScreen.getInstance().addNativeKeyListener(new GlobalKeyListener());
         parseAnswers(url);
-        /*if (!url2.equals("")) {
+        if (!url2.isEmpty()) {
             parseAnswers(url2);
-        }*/
+        }
         GlobalScreen.unregisterNativeHook();
         System.exit(0);
 
     }
 
     public static boolean allAnswersEntered = false;
-
+    public static boolean armKeyListener = false;
+    
     public static boolean go;
     public static Keyboard keyboard;
     public static int answerNum = -1;
@@ -139,7 +144,6 @@ public class Program {
         if (xml.charAt(0) != '<') {
             xml = fetchWebpage(url.replace(".html", ".xml"), false);
         }
-        System.out.println("xml: " + xml);
         int stindex = 0;
         int endindex = 0;
         answers.clear();
@@ -156,6 +160,7 @@ public class Program {
 
         }
         System.out.println("Press ctrl to type answer 1");
+        armKeyListener = true;
         Desktop.getDesktop().browse(new URI(url));
         while (!allAnswersEntered) {
             try {
@@ -164,6 +169,8 @@ public class Program {
                 Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        allAnswersEntered = false;
+        armKeyListener = false;
     }
 
     public static String fetchWebpage(String urlString, boolean utf_16) {
