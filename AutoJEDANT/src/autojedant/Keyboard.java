@@ -256,10 +256,12 @@ public class Keyboard {
                 doType(VK_ASTERISK);
                 break;
             case '(':
-                doType(VK_LEFT_PARENTHESIS);
+                //doType(VK_LEFT_PARENTHESIS);
+                doType(VK_SHIFT, VK_9);
                 break;
             case ')':
-                doType(VK_RIGHT_PARENTHESIS);
+                //doType(VK_RIGHT_PARENTHESIS);
+                doType(VK_SHIFT, VK_0);
                 break;
             case '_':
                 doType(VK_UNDERSCORE);

@@ -1,7 +1,0 @@
-#surefire
-#Thu Aug 14 08:31:05 PDT 2014
-maven.ext.class.path=C\:\\Program Files\\NetBeans 8.0\\java\\maven-nblib\\netbeans-eventspy.jar
-user.dir=C\:\\Users\\Henry\\SkyDrive\\Documents\\GitHub\\AutoJED\\AutoJED
-file.encoding=UTF-8
-localRepository=C\:\\Users\\Henry\\.m2\\repository
-basedir=C\:\\Users\\Henry\\SkyDrive\\Documents\\GitHub\\AutoJED\\AutoJED

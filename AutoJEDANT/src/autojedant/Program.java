@@ -13,13 +13,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -84,8 +88,12 @@ public class Program {
             Thread.sleep(100);
         }
         String url;
+        String url2 = "";
         if (!urlField.getText().startsWith("optional")) {
             url = urlField.getText();
+            if (!url.startsWith("http://")) {
+                url = "http://" + url;
+            }
         } else {
             defaultURL = defaultURL.replace("*P*", prefixField.getText());
             defaultURL = defaultURL.replace("*N*", suffixField.getText());
@@ -94,13 +102,47 @@ public class Program {
             int endindex = page.indexOf("\" onclick=\"openSmallerReal");
             url = page.substring(stindex, endindex);
             url = "http://www.phschool.com" + url;
-        }
-        System.out.println(url);
 
+            stindex = page.indexOf("<li><a href=\"/atschool/", stindex + 1);
+            if (stindex != -1) {
+                stindex += 13;
+                endindex = page.indexOf("\" onclick=\"openSmallerReal", stindex);
+                url2 = page.substring(stindex, endindex);
+                url2 = "http://www.phschool.com" + url2;
+                urlField.setText("!!!INFO: TWO JEDS FOR THIS CODE!!!");
+            }
+
+        }
+        System.out.println(url + " and " + url2);
+        
+        
+        GlobalScreen.getInstance().addNativeKeyListener(new GlobalKeyListener());
+        parseAnswers(url);
+        /*if (!url2.equals("")) {
+            parseAnswers(url2);
+        }*/
+        GlobalScreen.unregisterNativeHook();
+        System.exit(0);
+
+    }
+
+    public static boolean allAnswersEntered = false;
+
+    public static boolean go;
+    public static Keyboard keyboard;
+    public static int answerNum = -1;
+    public static List<String> answers = new ArrayList<String>();
+
+    public static void parseAnswers(String url) throws IOException, URISyntaxException {
+        answerNum = -1;
         String xml = fetchWebpage(url.replace(".html", ".xml"), true);
+        if (xml.charAt(0) != '<') {
+            xml = fetchWebpage(url.replace(".html", ".xml"), false);
+        }
         System.out.println("xml: " + xml);
         int stindex = 0;
         int endindex = 0;
+        answers.clear();
         while (true) {
             stindex = xml.indexOf("<A>", stindex + 1) + 3;
             if (stindex == 2) {
@@ -113,18 +155,18 @@ public class Program {
             System.out.println("Answer: " + answ);
 
         }
-        GlobalScreen.getInstance().addNativeKeyListener(new GlobalKeyListener());
         System.out.println("Press ctrl to type answer 1");
         Desktop.getDesktop().browse(new URI(url));
-
+        while (!allAnswersEntered) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
-    public static boolean go;
-    public static Keyboard keyboard;
-    public static int answerNum = -1;
-    public static List<String> answers = new ArrayList<String>();
-
-    public static String fetchWebpage(String urlString, boolean utf16) {
+    public static String fetchWebpage(String urlString, boolean utf_16) {
         URL url;
         InputStream is = null;
         BufferedReader br;
@@ -135,7 +177,7 @@ public class Program {
         try {
             url = new URL(urlString);
             is = url.openStream();  // throws an IOException
-            if (utf16) {
+            if (utf_16) {
                 br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_16));
             } else {
                 br = new BufferedReader(new InputStreamReader(is));

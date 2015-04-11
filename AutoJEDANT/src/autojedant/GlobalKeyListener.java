@@ -10,10 +10,6 @@ public class GlobalKeyListener implements NativeKeyListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
-
-        if (e.getKeyCode() == NativeKeyEvent.VK_ESCAPE) {
-            GlobalScreen.unregisterNativeHook();
-        }
     }
 
     @Override
@@ -23,16 +19,14 @@ public class GlobalKeyListener implements NativeKeyListener {
                 Program.answerNum++;
                 if (Program.answerNum >= Program.answers.size()) {
                     System.out.println("final answer entered, eqiting program.");
-                    GlobalScreen.unregisterNativeHook();
-                    System.exit(0);
+                    Program.allAnswersEntered = true;
                 }
                 Program.keyboard.type(Program.answers.get(Program.answerNum));
                 if (Program.answerNum == Program.answers.size() - 1) {
                     System.out.println("final answer entered, eqiting program.");
-                    GlobalScreen.unregisterNativeHook();
-                    System.exit(0);
+                    Program.allAnswersEntered = true;
                 }
-                
+
                 Program.keyboard.getRobot().keyPress(NativeKeyEvent.VK_DOWN);
                 try {
                     Thread.sleep(40);
@@ -47,8 +41,7 @@ public class GlobalKeyListener implements NativeKeyListener {
 
             if (Program.answerNum >= Program.answers.size()) {
                 System.out.println("final answer entered, eqiting program.");
-                GlobalScreen.unregisterNativeHook();
-                System.exit(0);
+                Program.allAnswersEntered = true;
             } else if (Program.answerNum == Program.answers.size() - 1) {
                 System.out.println("All answers entered, next ctrl ends program.");
             }
@@ -59,8 +52,7 @@ public class GlobalKeyListener implements NativeKeyListener {
             System.out.println("Decromenting answer number.");
             if (Program.answerNum >= Program.answers.size()) {
                 System.out.println("final answer entered, eqiting program.");
-                GlobalScreen.unregisterNativeHook();
-                System.exit(0);
+                Program.allAnswersEntered = true;
             } else if (Program.answerNum == Program.answers.size() - 1) {
                 System.out.println("All answers entered, next ctrl ends program.");
             }
@@ -72,8 +64,7 @@ public class GlobalKeyListener implements NativeKeyListener {
             System.out.println("Incromenting answer number.");
             if (Program.answerNum >= Program.answers.size()) {
                 System.out.println("final answer entered, eqiting program.");
-                GlobalScreen.unregisterNativeHook();
-                System.exit(0);
+                Program.allAnswersEntered = true;
             } else if (Program.answerNum == Program.answers.size() - 1) {
                 System.out.println("All answers entered, next ctrl ends program.");
             }
