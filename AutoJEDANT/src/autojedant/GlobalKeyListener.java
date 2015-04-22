@@ -38,40 +38,6 @@ public class GlobalKeyListener implements NativeKeyListener {
                 Program.keyboard.getRobot().keyRelease(NativeKeyEvent.VK_DOWN);
             }
         }
-
-        if (e.getKeyCode() == NativeKeyEvent.VK_SHIFT) {
-
-            if (Program.answerNum >= Program.answers.size()) {
-                System.out.println("final answer entered, eqiting program.");
-                Program.allAnswersEntered = true;
-            } else if (Program.answerNum == Program.answers.size() - 1) {
-                System.out.println("All answers entered, next ctrl ends program.");
-            }
-            Program.keyboard.type(Program.answers.get(Program.answerNum));
-        }
-        if (e.getKeyCode() == NativeKeyEvent.VK_DELETE || e.getKeyCode() == NativeKeyEvent.VK_LEFT) {
-            Program.answerNum--;
-            System.out.println("Decromenting answer number.");
-            if (Program.answerNum >= Program.answers.size()) {
-                System.out.println("final answer entered, eqiting program.");
-                Program.allAnswersEntered = true;
-            } else if (Program.answerNum == Program.answers.size() - 1) {
-                System.out.println("All answers entered, next ctrl ends program.");
-            }
-            //Program.keyboard.type(Program.answers.get(Program.answerNum));
-        }
-
-        if (e.getKeyCode() == NativeKeyEvent.VK_RIGHT) {
-            Program.answerNum++;
-            System.out.println("Incromenting answer number.");
-            if (Program.answerNum >= Program.answers.size()) {
-                System.out.println("final answer entered, eqiting program.");
-                Program.allAnswersEntered = true;
-            } else if (Program.answerNum == Program.answers.size() - 1) {
-                System.out.println("All answers entered, next ctrl ends program.");
-            }
-            //Program.keyboard.type(Program.answers.get(Program.answerNum));
-        }
     }
 
     @Override

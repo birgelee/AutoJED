@@ -9,6 +9,8 @@ import java.awt.AWTException;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,12 +61,17 @@ public class Program {
                 go = true;
             }
         });
-
+        
         JTextField prefixField = new JTextField(3);
         JTextField suffixField = new JTextField(4);
-
+        
         JTextField urlField = new JTextField(27);
-
+        
+        prefixField.addKeyListener(new Program.EnterContinue());
+        suffixField.addKeyListener(new Program.EnterContinue());
+        urlField.addKeyListener(new Program.EnterContinue());
+        
+        
         prefixField.setText("jed");
 
         urlField.setText("optional url (use instead of web code)");
@@ -207,6 +214,16 @@ public class Program {
             }
         }
         return result;
+    }
+    
+    private static class EnterContinue extends KeyAdapter {
+        @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyTyped(e);
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    go = true;
+                }
+            }
     }
 
 }
